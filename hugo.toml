@@ -1,0 +1,58 @@
+baseURL = "https://yourdomain.com/"
+locale = "zh-CN"
+title = "Kevin的博客"
+hasCJKLanguage = true
+paginate = 10
+enableRobotsTXT = true
+enableEmoji = true
+
+[params]
+  description = "记录技术与思考"
+  author = "Kevin Chen"
+  avatar = "/images/avatar.jpg"
+  since = 2024
+  keywords = ["技术", "编程", "前端", "后端"]
+  github = "kevinchen202008-cmyk"
+  email = "kevin.chen202008@gmail.com"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    style = "github"
+    lineNos = false
+    codeFences = true
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
+[menu]
+  [[menu.main]]
+    name = "首页"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    name = "归档"
+    url = "/archives/"
+    weight = 2
+  [[menu.main]]
+    name = "分类"
+    url = "/categories/"
+    weight = 3
+  [[menu.main]]
+    name = "标签"
+    url = "/tags/"
+    weight = 4
+  [[menu.main]]
+    name = "关于"
+    url = "/about/"
+    weight = 5
+
+[outputs]
+  home = ["HTML", "RSS"]
+  page = ["HTML"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML"]
+  term = ["HTML"]

@@ -1,0 +1,41 @@
+{{ define "main" }}
+<div class="post-list">
+  {{ range .Paginator.Pages }}
+  <article class="post-item">
+    <header class="post-header">
+      <h2 class="post-title">
+        <a href="{{ .Permalink }}">{{ .Title }}</a>
+      </h2>
+      <div class="post-meta">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006年01月02日" }}</time>
+        {{ with .Params.categories }}
+        &nbsp;·&nbsp;
+        {{ range . }}
+        <a href="{{ "/categories/" | relURL }}{{ . | urlize }}/" class="post-category">{{ . }}</a>
+        {{ end }}
+        {{ end }}
+      </div>
+    </header>
+    <div class="post-summary">
+      {{ if .Description }}
+        <p>{{ .Description }}</p>
+      {{ else }}
+        <p>{{ .Summary | plainify | truncate 200 }}</p>
+      {{ end }}
+    </div>
+    <footer class="post-footer">
+      <a href="{{ .Permalink }}" class="read-more">阅读全文 &rarr;</a>
+      {{ with .Params.tags }}
+      <div class="post-tags">
+        {{ range . }}
+        <a href="{{ "/tags/" | relURL }}{{ . | urlize }}/" class="tag">{{ . }}</a>
+        {{ end }}
+      </div>
+      {{ end }}
+    </footer>
+  </article>
+  {{ end }}
+</div>
+
+{{ template "_internal/pagination.html" . }}
+{{ end }}

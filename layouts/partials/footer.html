@@ -1,0 +1,11 @@
+<footer class="site-footer">
+  <div class="container">
+    <p>
+      &copy; {{ now.Year }} <a href="{{ .Site.BaseURL }}">{{ .Site.Params.author }}</a> &nbsp;·&nbsp;
+      由 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 强力驱动 &nbsp;·&nbsp;
+      {{ if .Site.Params.github }}
+      <a href="https://github.com/{{ .Site.Params.github }}" target="_blank" rel="noopener">GitHub</a>
+      {{ end }}
+    </p>
+  </div>
+</footer>

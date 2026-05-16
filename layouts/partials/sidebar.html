@@ -1,0 +1,49 @@
+<aside class="sidebar">
+
+  <!-- 关于作者 -->
+  <div class="widget widget-about">
+    <h3 class="widget-title">关于</h3>
+    <div class="widget-content">
+      <img src="{{ .Site.Params.avatar | default "/images/avatar.jpg" }}" alt="{{ .Site.Params.author }}" class="avatar">
+      <p>{{ .Site.Params.description }}</p>
+    </div>
+  </div>
+
+  <!-- 最新文章 -->
+  <div class="widget widget-recent">
+    <h3 class="widget-title">最新文章</h3>
+    <ul>
+      {{ range first 5 .Site.RegularPages.ByDate.Reverse }}
+      <li><a href="{{ .Permalink }}">{{ .Title }}</a></li>
+      {{ end }}
+    </ul>
+  </div>
+
+  <!-- 分类 -->
+  {{ with .Site.Taxonomies.categories }}
+  <div class="widget widget-categories">
+    <h3 class="widget-title">分类</h3>
+    <ul>
+      {{ range $name, $pages := . }}
+      <li>
+        <a href="{{ "/categories/" | relURL }}{{ $name | urlize }}/">{{ $name }}</a>
+        <span class="count">{{ len $pages }}</span>
+      </li>
+      {{ end }}
+    </ul>
+  </div>
+  {{ end }}
+
+  <!-- 标签云 -->
+  {{ with .Site.Taxonomies.tags }}
+  <div class="widget widget-tags">
+    <h3 class="widget-title">标签</h3>
+    <div class="tag-cloud">
+      {{ range $name, $pages := . }}
+      <a href="{{ "/tags/" | relURL }}{{ $name | urlize }}/" class="tag">{{ $name }}</a>
+      {{ end }}
+    </div>
+  </div>
+  {{ end }}
+
+</aside>
