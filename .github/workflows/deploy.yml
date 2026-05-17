@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Build and Push
 
 on:
   push:
@@ -7,13 +7,10 @@ on:
 
 permissions:
   contents: read
-  packages: write  # 允许推送到 GitHub Container Registry
-
-env:
-  IMAGE: ghcr.io/${{ github.repository_owner }}/kevin-blog
+  packages: write
 
 jobs:
-  build-and-deploy:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -35,42 +32,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ env.IMAGE }}:latest
-            ${{ env.IMAGE }}:${{ github.sha }}
-
-      - name: Deploy to ECS
-        uses: appleboy/ssh-action@v1
-        env:
-          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GHCR_USER: ${{ github.actor }}
-          DEPLOY_IMAGE: ${{ env.IMAGE }}:${{ github.sha }}
-        with:
-          host: ${{ secrets.ECS_HOST }}
-          username: ${{ secrets.ECS_USER }}
-          key: ${{ secrets.ECS_SSH_KEY }}
-          envs: GHCR_TOKEN,GHCR_USER,DEPLOY_IMAGE
-          script: |
-            set -e
-
-            # 登录 GHCR（用本次 Actions 的临时 token 拉取镜像）
-            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
-
-            mkdir -p /opt/kevin-blog
-
-            cat > /opt/kevin-blog/docker-compose.yml << COMPOSE
-            services:
-              blog:
-                image: ${DEPLOY_IMAGE}
-                ports:
-                  - "80:80"
-                restart: unless-stopped
-                logging:
-                  driver: "json-file"
-                  options:
-                    max-size: "10m"
-                    max-file: "3"
-            COMPOSE
-
-            docker compose -f /opt/kevin-blog/docker-compose.yml pull
-            docker compose -f /opt/kevin-blog/docker-compose.yml up -d --remove-orphans
-            docker image prune -f
+            ghcr.io/${{ github.repository_owner }}/kevin-blog:latest
+            ghcr.io/${{ github.repository_owner }}/kevin-blog:${{ github.sha }}
