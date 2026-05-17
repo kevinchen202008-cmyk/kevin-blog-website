@@ -2,7 +2,8 @@ baseURL = "https://yourdomain.com/"
 locale = "zh-CN"
 title = "Kevin的博客"
 hasCJKLanguage = true
-paginate = 10
+[pagination]
+  pagerSize = 10
 enableRobotsTXT = true
 enableEmoji = true
 
