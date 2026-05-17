@@ -49,19 +49,17 @@ description: ""   # Used as excerpt on list pages
 
 ### Deployment
 
-**Stack:** Docker (multi-stage build) → Docker Hub → Alibaba Cloud ECS (Ubuntu)
+**Stack:** Docker (multi-stage build) → GitHub Container Registry (ghcr.io) → Alibaba Cloud ECS (Ubuntu)
 
 **GitHub Actions** (`.github/workflows/deploy.yml`) triggers on push to `main`:
 1. Builds multi-stage Docker image (`hugomods/hugo:exts` → `nginx:alpine`)
-2. Pushes to Docker Hub as `DOCKER_USERNAME/kevin-blog:latest` and `:GIT_SHA`
-3. SSHes into ECS, writes `docker-compose.yml`, runs `docker compose up -d`
+2. Pushes to `ghcr.io/kevinchen202008-cmyk/kevin-blog:latest` and `:GIT_SHA` using the built-in `GITHUB_TOKEN` (no extra secrets needed for the registry)
+3. SSHes into ECS, logs in to ghcr.io with the same token, writes `docker-compose.yml`, runs `docker compose up -d`
 
-**Required GitHub Secrets:**
+**Required GitHub Secrets** (repo → Settings → Secrets → Actions):
 
 | Secret | Value |
 |--------|-------|
-| `DOCKER_USERNAME` | Docker Hub username |
-| `DOCKER_PASSWORD` | Docker Hub access token |
 | `ECS_HOST` | Alibaba Cloud ECS public IP |
 | `ECS_USER` | SSH username (`root` or `ubuntu`) |
 | `ECS_SSH_KEY` | ECS SSH private key contents |

@@ -5,8 +5,12 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  packages: write  # 允许推送到 GitHub Container Registry
+
 env:
-  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/kevin-blog
+  IMAGE: ghcr.io/${{ github.repository_owner }}/kevin-blog
 
 jobs:
   build-and-deploy:
@@ -18,11 +22,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Log in to Docker Hub
+      - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
@@ -30,24 +35,32 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ env.IMAGE_NAME }}:latest
-            ${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ env.IMAGE }}:latest
+            ${{ env.IMAGE }}:${{ github.sha }}
 
       - name: Deploy to ECS
         uses: appleboy/ssh-action@v1
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_USER: ${{ github.actor }}
+          DEPLOY_IMAGE: ${{ env.IMAGE }}:${{ github.sha }}
         with:
           host: ${{ secrets.ECS_HOST }}
           username: ${{ secrets.ECS_USER }}
           key: ${{ secrets.ECS_SSH_KEY }}
+          envs: GHCR_TOKEN,GHCR_USER,DEPLOY_IMAGE
           script: |
             set -e
+
+            # 登录 GHCR（用本次 Actions 的临时 token 拉取镜像）
+            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+
             mkdir -p /opt/kevin-blog
 
-            # 写入 docker-compose.yml（每次部署覆盖，确保与仓库一致）
-            cat > /opt/kevin-blog/docker-compose.yml << 'COMPOSE'
+            cat > /opt/kevin-blog/docker-compose.yml << COMPOSE
             services:
               blog:
-                image: ${{ env.IMAGE_NAME }}:${{ github.sha }}
+                image: ${DEPLOY_IMAGE}
                 ports:
                   - "80:80"
                 restart: unless-stopped
@@ -60,6 +73,4 @@ jobs:
 
             docker compose -f /opt/kevin-blog/docker-compose.yml pull
             docker compose -f /opt/kevin-blog/docker-compose.yml up -d --remove-orphans
-
-            # 清理旧镜像，保留磁盘空间
             docker image prune -f

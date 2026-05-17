@@ -1,6 +1,6 @@
 services:
   blog:
-    image: ${DOCKER_IMAGE}:${IMAGE_TAG:-latest}
+    image: ghcr.io/kevinchen202008-cmyk/kevin-blog:latest
     ports:
       - "80:80"
     restart: unless-stopped
