@@ -1,4 +1,4 @@
-baseURL = "https://yourdomain.com/"
+baseURL = "http://42.121.161.104/"
 locale = "zh-CN"
 title = "Kevin的博客"
 hasCJKLanguage = true
