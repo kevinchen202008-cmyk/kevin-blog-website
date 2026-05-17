@@ -1,0 +1,11 @@
+services:
+  blog:
+    image: ${DOCKER_IMAGE}:${IMAGE_TAG:-latest}
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

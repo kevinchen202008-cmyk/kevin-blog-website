@@ -1,0 +1,11 @@
+public/
+resources/
+.hugo_build.lock
+.git/
+.github/
+*.md
+!content/**/*.md
+!archetypes/**/*.md
+.DS_Store
+Thumbs.db
+scripts/

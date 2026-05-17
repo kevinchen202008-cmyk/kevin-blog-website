@@ -49,20 +49,36 @@ description: ""   # Used as excerpt on list pages
 
 ### Deployment
 
+**Stack:** Docker (multi-stage build) → Docker Hub → Alibaba Cloud ECS (Ubuntu)
+
 **GitHub Actions** (`.github/workflows/deploy.yml`) triggers on push to `main`:
-1. Builds with `hugo --minify`
-2. rsyncs `public/` to the ECS server via SSH
+1. Builds multi-stage Docker image (`hugomods/hugo:exts` → `nginx:alpine`)
+2. Pushes to Docker Hub as `DOCKER_USERNAME/kevin-blog:latest` and `:GIT_SHA`
+3. SSHes into ECS, writes `docker-compose.yml`, runs `docker compose up -d`
 
 **Required GitHub Secrets:**
 
 | Secret | Value |
 |--------|-------|
+| `DOCKER_USERNAME` | Docker Hub username |
+| `DOCKER_PASSWORD` | Docker Hub access token |
 | `ECS_HOST` | Alibaba Cloud ECS public IP |
-| `ECS_USER` | SSH username (e.g. `root` or `ubuntu`) |
-| `ECS_SSH_KEY` | Private key content (the ECS key pair) |
-| `DEPLOY_PATH` | Remote path, e.g. `/var/www/kevin-blog` |
+| `ECS_USER` | SSH username (`root` or `ubuntu`) |
+| `ECS_SSH_KEY` | ECS SSH private key contents |
 
-**Nginx** (`nginx.conf`) — copy to `/etc/nginx/sites-available/kevin-blog` on the ECS, symlink to `sites-enabled/`, then `nginx -s reload`. Update `server_name` to your actual domain.
+**First-time ECS setup** — run once on the server:
+```bash
+bash scripts/setup-ecs.sh
+```
+
+**Local Docker test** (before pushing):
+```bash
+docker build -t kevin-blog .
+docker run -p 8080:80 kevin-blog
+# open http://localhost:8080
+```
+
+**Nginx** config is baked into the image (`nginx.conf` → `/etc/nginx/conf.d/default.conf`). Logs go to Docker stdout/stderr (`docker logs <container>`).
 
 ### Configuration
 
