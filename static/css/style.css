@@ -617,6 +617,206 @@ img {
 }
 
 /* ============================
+   PPT 式图文组件
+   ============================ */
+
+.ppt-hero {
+  background: #1a1a1a;
+  color: #fff;
+  border-radius: 6px;
+  padding: 32px 28px;
+  margin: 2em 0;
+  text-align: center;
+}
+.ppt-hero .ppt-eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #c0392b;
+  margin-bottom: 12px;
+}
+.ppt-hero .ppt-headline {
+  font-size: 26px;
+  font-weight: bold;
+  color: #fff;
+  margin: 0 0 10px;
+  line-height: 1.3;
+}
+.ppt-hero .ppt-sub {
+  font-size: 14px;
+  color: #999;
+  margin: 0;
+}
+
+.ppt-cards {
+  display: grid;
+  gap: 14px;
+  margin: 1.5em 0;
+}
+.ppt-cards--2 { grid-template-columns: 1fr 1fr; }
+.ppt-cards--3 { grid-template-columns: 1fr 1fr 1fr; }
+.ppt-cards--4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+.ppt-card {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+  padding: 18px 16px;
+}
+.ppt-card--red   { border-top: 3px solid #c0392b; }
+.ppt-card--dark  { border-top: 3px solid #2c2c2c; }
+.ppt-card--blue  { border-top: 3px solid #2980b9; }
+.ppt-card--green { border-top: 3px solid #27ae60; }
+.ppt-card--orange{ border-top: 3px solid #e67e22; }
+
+.ppt-card-icon  { font-size: 24px; margin-bottom: 8px; line-height: 1; }
+.ppt-card-title { font-size: 14px; font-weight: bold; color: #222; margin: 0 0 6px; }
+.ppt-card-body  { font-size: 13px; color: #666; line-height: 1.7; margin: 0; }
+
+.ppt-card-kv { list-style: none; padding: 0; margin: 0; }
+.ppt-card-kv li {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 5px 0;
+  border-bottom: 1px solid #f5f5f5;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.5;
+}
+.ppt-card-kv li:last-child { border-bottom: none; }
+.ppt-card-kv .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #c0392b; flex-shrink: 0; margin-top: 6px;
+}
+
+.ppt-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 1.5em 0;
+}
+.ppt-stat {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+  padding: 16px 10px;
+  text-align: center;
+}
+.ppt-stat-num   { font-size: 30px; font-weight: bold; color: #c0392b; line-height: 1; margin-bottom: 6px; }
+.ppt-stat-label { font-size: 12px; color: #888; line-height: 1.4; }
+
+.ppt-tabs {
+  display: flex;
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 1.5em 0;
+}
+.ppt-tab {
+  flex: 1;
+  padding: 16px 14px;
+  text-align: center;
+  background: #fafafa;
+  border-right: 1px solid #e8e8e8;
+}
+.ppt-tab:last-child { border-right: none; }
+.ppt-tab--active {
+  background: #fff;
+  border-top: 3px solid #c0392b;
+  padding-top: 13px;
+}
+.ppt-tab-name { font-size: 15px; font-weight: bold; color: #222; margin-bottom: 4px; }
+.ppt-tab-user { font-size: 11px; color: #c0392b; margin-bottom: 4px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
+.ppt-tab-desc { font-size: 12px; color: #888; line-height: 1.5; }
+
+.ppt-flow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 1.5em 0;
+  flex-wrap: wrap;
+}
+.ppt-flow-step {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 5px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: #444;
+  text-align: center;
+  flex: 1;
+  min-width: 70px;
+  line-height: 1.5;
+}
+.ppt-flow-step--accent {
+  background: #fdf6f6;
+  border-color: #c0392b;
+  color: #c0392b;
+  font-weight: bold;
+}
+.ppt-flow-arrow { color: #ccc; font-size: 16px; flex-shrink: 0; }
+
+.ppt-callout {
+  background: #fdf6f6;
+  border-left: 4px solid #c0392b;
+  border-radius: 0 6px 6px 0;
+  padding: 14px 18px;
+  margin: 1.5em 0;
+}
+.ppt-callout-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #c0392b;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.ppt-callout p { font-size: 14px; color: #444; margin: 0; line-height: 1.7; }
+
+.ppt-warning {
+  background: #fffbf0;
+  border-left: 4px solid #e67e22;
+  border-radius: 0 6px 6px 0;
+  padding: 12px 16px;
+  margin: 0.8em 0;
+}
+.ppt-warning p { font-size: 13px; color: #555; margin: 0; line-height: 1.6; }
+
+.ppt-badge {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.3px;
+}
+.ppt-badge--red   { background: #fdf6f6; color: #c0392b; border: 1px solid #f0b0aa; }
+.ppt-badge--gray  { background: #f0f0f0; color: #666;    border: 1px solid #ddd; }
+.ppt-badge--green { background: #f0faf4; color: #27ae60; border: 1px solid #a8ddb5; }
+
+.ppt-roadmap {
+  margin: 1.5em 0;
+  border-left: 2px solid #e8e8e8;
+  padding-left: 22px;
+}
+.ppt-roadmap-item { position: relative; margin-bottom: 22px; }
+.ppt-roadmap-item::before {
+  content: '';
+  position: absolute;
+  left: -28px; top: 5px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #ddd;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 2px #ddd;
+}
+.ppt-roadmap-item--done::before { background: #c0392b; box-shadow: 0 0 0 2px #c0392b; }
+.ppt-roadmap-item--wip::before  { background: #e67e22; box-shadow: 0 0 0 2px #e67e22; }
+.ppt-roadmap-title { font-size: 14px; font-weight: bold; color: #222; margin-bottom: 3px; }
+.ppt-roadmap-desc  { font-size: 13px; color: #888; line-height: 1.5; }
+
+/* ============================
    响应式
    ============================ */
 @media (max-width: 768px) {
@@ -649,4 +849,14 @@ img {
   .post-nav-next {
     text-align: left;
   }
+
+  .ppt-cards--2,
+  .ppt-cards--3,
+  .ppt-cards--4 { grid-template-columns: 1fr; }
+  .ppt-stats     { grid-template-columns: 1fr 1fr; }
+  .ppt-tabs      { flex-direction: column; }
+  .ppt-tab       { border-right: none; border-bottom: 1px solid #e8e8e8; }
+  .ppt-tab:last-child { border-bottom: none; }
+  .ppt-flow      { flex-direction: column; }
+  .ppt-stat-num  { font-size: 24px; }
 }
